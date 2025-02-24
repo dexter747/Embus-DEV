@@ -19,3 +19,72 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer utilities {
+  .touch-callout-none {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .input-focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary;
+  }
+  
+  .mobile-touch {
+    @apply touch-manipulation select-none active:scale-[0.98];
+  }
+}
+
+@media (max-width: 768px) {
+  .font-chillax {
+    letter-spacing: -0.02em;
+  }
+  
+  input, button {
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* Leaflet Map Styles */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: white !important;
+  color: #374151 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #f9fafb !important;
+}
+
+.leaflet-marker-icon {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1));
+}
+
+.leaflet-control-container .leaflet-control {
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 0.5rem;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+}
