@@ -96,11 +96,13 @@ const Navbar = ({ colors }: NavbarProps) => {
               )}
             </span>
           </div>
-          {['Help'].map((item) => (
+          {/* Add Home button before Help */}
+          {['Home', 'Help'].map((item) => (
             <button 
               key={item}
-              className="px-3 py-1 rounded-md transition-colors font-medium"
+              className="px-3 py-1 rounded-md transition-colors font-medium hover:bg-gray-50"
               style={{ color: colors.darkText }}
+              onClick={() => item === 'Home' && router.push('/landing')}
             >
               {item}
             </button>
@@ -178,11 +180,12 @@ const Navbar = ({ colors }: NavbarProps) => {
                   </span>
                 </div>
                 
-                {['Help', 'Your Trips', 'Saved Cards', 'Preferences'].map(item => (
+                {['Home', 'Help', 'Your Trips', 'Saved Cards', 'Preferences'].map(item => (
                   <button 
                     key={item}
                     className="w-full p-4 text-left rounded-lg hover:bg-gray-50 font-medium text-base active:bg-gray-100"
                     style={{ color: colors.darkText }}
+                    onClick={() => item === 'Home' && router.push('/landing')}
                   >
                     {item}
                   </button>
