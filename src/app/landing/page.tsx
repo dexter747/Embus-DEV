@@ -40,7 +40,7 @@ const LandingPage = () => {
               </span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose Your Journey Type
+              
               Select the type of journey that suits your travel needs
             </p>
           </div>

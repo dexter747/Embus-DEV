@@ -47,6 +47,22 @@ const Navbar = ({ colors }: NavbarProps) => {
     }
   }, []);
 
+  // Add to your navigation items
+  const navigationItems = [
+    { name: 'Home', href: '/landing' },
+    { name: 'Help' },
+    { name: 'Sign In', href: '/auth/signin' }
+  ].map(item => (
+    <button 
+      key={item.name}
+      className="px-3 py-1 rounded-md transition-colors font-medium hover:bg-gray-50"
+      style={{ color: colors.darkText }}
+      onClick={() => item.href && router.push(item.href)}
+    >
+      {item.name}
+    </button>
+  ));
+
   return (
     <nav style={{ backgroundColor: 'white' }} className="sticky top-0 z-50">
       <div className="w-full px-4 md:px-6 py-3 flex items-center justify-between">
@@ -97,16 +113,7 @@ const Navbar = ({ colors }: NavbarProps) => {
             </span>
           </div>
           {/* Add Home button before Help */}
-          {['Home', 'Help'].map((item) => (
-            <button 
-              key={item}
-              className="px-3 py-1 rounded-md transition-colors font-medium hover:bg-gray-50"
-              style={{ color: colors.darkText }}
-              onClick={() => item === 'Home' && router.push('/landing')}
-            >
-              {item}
-            </button>
-          ))}
+          {navigationItems}
 
           {/* Profile Section */}
           <div className="relative group">
