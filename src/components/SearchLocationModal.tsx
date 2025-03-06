@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import 'leaflet/dist/leaflet.css';
 import type { Map as LeafletMap } from 'leaflet';
 import L from 'leaflet';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Add this near the top of the file
 const DEBOUNCE_DELAY = 300; // Reduce debounce delay
@@ -128,97 +129,157 @@ const SearchLocationModal = ({ isOpen, onClose, onSelect, type, colors }: Search
     }
   }, [selectedLocation]);
 
-  if (!isOpen) return null;
-
-  // Update the main modal container and content styling
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl w-full max-w-5xl h-[80vh] flex flex-col"> 
-        {/* Header - remains same */}
-        <div className="p-4 border-b flex-shrink-0 flex items-center justify-between">
-          <h2 className="text-xl font-chillax font-semibold" style={{ color: colors.darkText }}>
-            Select {type === 'from' ? 'Pickup' : 'Drop-off'} Location
-          </h2>
-          <button 
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        {/* Search Input - add flex-shrink-0 */}
-        <div className="p-4 border-b flex-shrink-0">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search for a location..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full p-3 pl-10 border rounded-lg text-gray-900 font-medium"
-              autoFocus
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-          </div>
-        </div>
-
-        {/* Content - update with flex-1 and min-height-0 */}
-        <div className="flex-1 flex min-h-0">
-          {/* Results List - update with overflow handling */}
-          <div className="w-full md:w-2/5 border-r overflow-y-auto">
-            {loading ? (
-              <div className="p-4 text-center">
-                <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto"></div>
-              </div>
-            ) : (
-              <div className="divide-y overflow-y-auto">
-                {results.map((result, idx) => (
-                  <button
-                    key={idx}
-                    className="w-full p-4 text-left hover:bg-gray-50 flex items-start gap-3"
-                    onClick={() => setSelectedLocation(result)}
-                  >
-                    <MapPin className="text-gray-400 mt-1 flex-shrink-0" size={18} />
-                    <div className="min-w-0">
-                      <p className="font-medium text-gray-900">
-                        {result.name}
-                      </p>
-                      <p className="text-sm text-gray-600">{result.address}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Map View - remains same */}
-          <div className="hidden md:block flex-1 relative bg-gray-50">
-            <div className="absolute inset-0 m-4">
-              {typeof window !== 'undefined' && (
-                <MapView selectedLocation={selectedLocation} />
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Footer - add flex-shrink-0 */}
-        <div className="p-4 border-t flex-shrink-0">
-          <button
-            className="w-full py-3 rounded-lg text-white font-medium disabled:opacity-50"
-            style={{ backgroundColor: colors.primaryGreen }}
-            onClick={() => {
-              if (selectedLocation) {
-                onSelect(selectedLocation);
-                onClose();
-              }
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            transition={{ 
+              duration: 0.3,
+              type: "spring",
+              stiffness: 300,
+              damping: 30
             }}
-            disabled={!selectedLocation}
-          >
-            Confirm Location
-          </button>
-        </div>
-      </div>
-    </div>
+            className="bg-white rounded-xl w-full max-w-5xl h-[80vh] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          > 
+            {/* Header with slide-down animation */}
+            <motion.div 
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="p-4 border-b flex-shrink-0 flex items-center justify-between"
+            >
+              <h2 className="text-xl font-chillax font-semibold" style={{ color: colors.darkText }}>
+                Select {type === 'from' ? 'Pickup' : 'Drop-off'} Location
+              </h2>
+              <motion.button 
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={onClose}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X size={20} />
+              </motion.button>
+            </motion.div>
+
+            {/* Search Input with fade-in animation */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="p-4 border-b flex-shrink-0"
+            >
+              <div className="relative">
+                <motion.input
+                  initial={{ width: "90%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ delay: 0.3, duration: 0.2 }}
+                  type="text"
+                  placeholder="Search for a location..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full p-3 pl-10 border rounded-lg text-gray-900 font-medium focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  autoFocus
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+              </div>
+            </motion.div>
+
+            {/* Content with staggered children */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="flex-1 flex min-h-0"
+            >
+              {/* Results List with staggered items */}
+              <div className="w-full md:w-2/5 border-r overflow-y-auto">
+                {loading ? (
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="p-4 text-center"
+                  >
+                    <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto"></div>
+                  </motion.div>
+                ) : (
+                  <div className="divide-y overflow-y-auto">
+                    {results.map((result, idx) => (
+                      <motion.button
+                        key={idx}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                        whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
+                        className="w-full p-4 text-left hover:bg-gray-50 flex items-start gap-3"
+                        onClick={() => setSelectedLocation(result)}
+                      >
+                        <MapPin className="text-gray-400 mt-1 flex-shrink-0" size={18} />
+                        <div className="min-w-0">
+                          <p className="font-medium text-gray-900">{result.name}</p>
+                          <p className="text-sm text-gray-600">{result.address}</p>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Map View with fade-in */}
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="hidden md:block flex-1 relative bg-gray-50"
+              >
+                <div className="absolute inset-0 m-4">
+                  {typeof window !== 'undefined' && (
+                    <MapView selectedLocation={selectedLocation} />
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Footer with slide-up animation */}
+            <motion.div 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="p-4 border-t flex-shrink-0"
+            >
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full py-3 rounded-lg text-white font-medium disabled:opacity-50 transition-all"
+                style={{ backgroundColor: colors.primaryGreen }}
+                onClick={() => {
+                  if (selectedLocation) {
+                    onSelect(selectedLocation);
+                    onClose();
+                  }
+                }}
+                disabled={!selectedLocation}
+              >
+                Confirm Location
+              </motion.button>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

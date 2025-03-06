@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Search, MapPin, Calendar, TrendingUp, Bus } from 'lucide-react';
 import Navbar from '@/components/navbar';
 import SearchLocationModal from '@/components/SearchLocationModal';
 
@@ -20,22 +21,45 @@ const LandingPage = () => {
     darkText: '#0E0E0E'
   };
 
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8 }
+  };
+
   return (
     <div className="min-h-screen font-dm-sans" style={{ backgroundColor: colors.lightBg }}>
       <Navbar colors={colors} />
+      
+      {/* Hero Section with Animation */}
       <div className="relative">
-        <div className="absolute inset-0" style={{ 
-          background: `linear-gradient(to right, ${colors.primaryGreen}, ${colors.secondaryGreen})`,
-          opacity: 0.95
-        }}></div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.95 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0" 
+          style={{ 
+            background: `linear-gradient(to right, ${colors.primaryGreen}, ${colors.secondaryGreen})`,
+          }}
+        />
 
-        <div className="relative max-w-7xl mx-auto px-4 py-8 md:py-16 lg:py-24">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-chillax font-semibold text-white text-center mb-6 md:mb-12">
+        <div className="relative max-w-7xl mx-auto px-4 py-24">
+          <motion.h1 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+            className="text-6xl md:text-7xl font-chillax font-semibold text-white text-center mb-12"
+          >
             {isInterCity ? 'Inter-City Travel' : 'embus'}
-          </h1>
+          </motion.h1>
           
-          {/* Search Box */}
-          <div className="bg-white rounded-xl shadow-xl p-4 md:p-8 max-w-4xl mx-auto">
+          {/* Search Box with Animation */}
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto"
+          >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               {[
                 { label: 'From', value: fromCity, setter: setFromCity, placeholder: 'Select area' },
@@ -75,16 +99,29 @@ const LandingPage = () => {
             >
               Search Buses
             </button>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Trending Offers Section */}
-      <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
-        <h2 className="text-2xl md:text-3xl font-chillax font-bold mb-6 md:mb-8 text-gray-900">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto px-4 py-16"
+      >
+        <motion.h2 
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="text-3xl font-chillax font-bold mb-8"
+          style={{ color: colors.darkText }}
+        >
           TRENDING OFFERS
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { title: 'First Time User', icon: '1st', color: colors.primaryGreen, 
               desc: 'Save up to ₹250 on your first booking' },
@@ -93,13 +130,18 @@ const LandingPage = () => {
             { title: 'Student Discount', icon: '₹', color: colors.primaryGreen,
               desc: 'Special rates for students' }
           ].map((offer, idx) => (
-            <div 
+            <motion.div
               key={idx}
-              className="rounded-xl p-4 md:p-6 transition-all duration-300 active:scale-[0.98] md:hover:scale-[1.03] cursor-pointer group"
-              style={{ 
-                backgroundColor: `${offer.color}10`,
-                transform: 'translateY(0)'
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: idx * 0.2 }}
+              whileHover={{ 
+                y: -8, 
+                scale: 1.02,
+                transition: { duration: 0.2 }
               }}
+              className="rounded-xl p-6 cursor-pointer group"
+              style={{ backgroundColor: `${offer.color}10` }}
             >
               <div className="flex items-start gap-4">
                 <div 
@@ -123,20 +165,31 @@ const LandingPage = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Upcoming Buses Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="flex justify-between items-center mb-8">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto px-4 py-16"
+      >
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-between items-center mb-8"
+        >
           <h2 className="text-3xl font-chillax font-bold" style={{ color: colors.darkText }}>
             UPCOMING BUSES IN YOUR AREA
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { 
               route: 'Route 27B',
@@ -166,12 +219,18 @@ const LandingPage = () => {
               seats: '15 seats available'
             }
           ].map((bus, idx) => (
-            <div 
+            <motion.div
               key={idx}
-              className="rounded-xl p-4 md:p-6 border border-gray-100 bg-white shadow-sm transition-all duration-300 active:scale-[0.98] md:hover:scale-[1.03] cursor-pointer group"
-              style={{ 
-                backgroundColor: idx % 2 === 0 ? `${colors.primaryGreen}10` : `${colors.secondaryGreen}10`,
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: idx * 0.2 }}
+              whileHover={{ 
+                y: -8, 
+                scale: 1.02,
+                transition: { duration: 0.2 }
               }}
+              className="rounded-xl p-6 bg-white shadow-lg border border-gray-100 cursor-pointer group"
+              style={{ backgroundColor: idx % 2 === 0 ? `${colors.primaryGreen}10` : `${colors.secondaryGreen}10` }}
             >
               <div className="flex justify-between items-start mb-4">
                 <h3 className="font-chillax font-bold text-lg transition-all duration-300 group-hover:text-xl" 
@@ -208,22 +267,31 @@ const LandingPage = () => {
                   {bus.seats}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Footer */}
-      <footer className="bg-white py-8">
-        <div className="text-center max-w-2xl mx-auto px-4">
-        <h2 
-          className="text-2xl md:text-2xl font-chillax font-semibold"
-          style={{ color: colors.primaryGreen }}
+      {/* Footer with Animation */}
+      <motion.footer 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="bg-white py-8"
+      >
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          className="text-center max-w-2xl mx-auto px-4"
         >
-          Apno ko, Sapno ko Kareeb Laaye.
-        </h2>
-        </div>
-      </footer>
+          <h2 
+            className="text-2xl md:text-2xl font-chillax font-semibold"
+            style={{ color: colors.primaryGreen }}
+          >
+            Apno ko, Sapno ko Kareeb Laaye.
+          </h2>
+        </motion.div>
+      </motion.footer>
 
       <SearchLocationModal
         isOpen={isSearchModalOpen}

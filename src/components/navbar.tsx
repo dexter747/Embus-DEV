@@ -51,7 +51,7 @@ const Navbar = ({ colors }: NavbarProps) => {
   const navigationItems = [
     { name: 'Home', href: '/landing' },
     { name: 'Help' },
-    { name: 'Sign In', href: '/auth/signin' }
+    { name: 'Sign In', href: '/auth/signup' }
   ].map(item => (
     <button 
       key={item.name}

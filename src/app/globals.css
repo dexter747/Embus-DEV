@@ -88,3 +88,44 @@ body {
   border: 1px solid rgba(0,0,0,0.1);
   border-radius: 0.5rem;
 }
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background-color: rgba(248, 249, 250, 0.8);
+  border: 2px solid rgba(226, 232, 240, 0.8);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(1, 223, 115, 0.5);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 4px rgba(1, 223, 115, 0.1);
+}
+
+.btn {
+  width: auto;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(1, 223, 115, 0.15);
+}
+
+.btn.transparent {
+  background-color: transparent;
+  border: 1px solid white;
+}

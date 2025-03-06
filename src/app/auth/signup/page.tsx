@@ -1,229 +1,190 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaFacebookF, FaGoogle, FaGithub, FaLinkedinIn } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight, AlertCircle } from 'lucide-react';
+import { Plus_Jakarta_Sans } from 'next/font/google';
+import '../../globals.css';
 
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+const plusJakarta = Plus_Jakarta_Sans({ 
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 const SignUpPage = () => {
+  const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [error, setError] = useState('');
-
-  const colors = {
-    primaryGreen: 'rgb(1, 223, 115)',    // #01DF73
-    secondaryGreen: 'rgb(201, 230, 0)',  // #C9E600
-    lightBg: '#F7FFF2',
-    darkText: '#0E0E0E',
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-    setError('');
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-    setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSubmitting(false);
-    router.push('/auth/signin');
-  };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8" 
-         style={{ backgroundColor: colors.lightBg }}>
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Logo */}
-        <div className="flex justify-center">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-            className="font-bold text-4xl flex items-center"
-            style={{ color: colors.primaryGreen }}
-          >
-            embus
-          </motion.div>
-        </div>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-6 text-center text-3xl font-chillax font-bold"
-          style={{ color: colors.darkText }}
-        >
-          Create your account
-        </motion.h2>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md"
+    <div className={`flex items-center justify-center min-h-screen bg-gradient-to-br from-[#01DF73]/90 via-[#7EE668]/80 to-[#C9E600]/70 p-6 ${plusJakarta.className}`}>
+      <motion.div 
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative w-[900px] max-w-full min-h-[600px] bg-white/40 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden border border-white/20"
       >
-        <div className="bg-white py-8 px-4 shadow-xl rounded-xl sm:px-10">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
+        {/* Form Container */}
+        <motion.div
+          animate={{ x: isSignUp ? '100%' : '0%' }}
+          transition={{ duration: 0.7, ease: [0.4, 0.0, 0.2, 1] }}
+          className="absolute top-0 left-0 w-1/2 h-full bg-white/95 backdrop-blur-sm flex flex-col items-center justify-center p-12"
+        >
+          <AnimatePresence mode="wait">
+            {!isSignUp ? (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
+                key="signin"
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-red-50 p-4 rounded-md flex items-start space-x-2"
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center w-full space-y-4"
               >
-                <AlertCircle className="w-5 h-5 text-red-500 mt-0.5" />
-                <p className="text-sm text-red-500">{error}</p>
+                <h1 className="text-4xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+                <div className="flex space-x-4 mt-2">
+                  {[FaFacebookF, FaGoogle, FaGithub, FaLinkedinIn].map((Icon, index) => (
+                    <motion.a
+                      key={index}
+                      whileHover={{ scale: 1.1, backgroundColor: '#01DF73', borderColor: '#01DF73', color: 'white' }}
+                      whileTap={{ scale: 0.95 }}
+                      href="#"
+                      className="w-12 h-12 flex items-center justify-center border-2 border-gray-200 rounded-full transition-colors"
+                    >
+                      <Icon className="text-current text-xl" />
+                    </motion.a>
+                  ))}
+                </div>
+                <span className="text-sm text-gray-600">or use your email to sign in</span>
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="email" 
+                  placeholder="Email" 
+                  className="input mb-4" 
+                />
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="password" 
+                  placeholder="Password" 
+                  className="input mb-6" 
+                />
+                <motion.button 
+                  whileHover={{ scale: 1.02, backgroundColor: '#00c567' }}
+                  whileTap={{ scale: 0.98 }}
+                  className="btn w-full"
+                  onClick={() => router.push('/landing')}
+                  style={{ backgroundColor: '#01DF73' }}
+                >
+                  Sign In
+                </motion.button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="signup"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center w-full space-y-4"
+              >
+                <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Account</h1>
+                <div className="flex space-x-4 mt-2">
+                  {[FaFacebookF, FaGoogle, FaGithub, FaLinkedinIn].map((Icon, index) => (
+                    <motion.a
+                      key={index}
+                      whileHover={{ scale: 1.1, backgroundColor: '#01DF73', borderColor: '#01DF73', color: 'white' }}
+                      whileTap={{ scale: 0.95 }}
+                      href="#"
+                      className="w-12 h-12 flex items-center justify-center border-2 border-gray-200 rounded-full transition-colors"
+                    >
+                      <Icon className="text-current text-xl" />
+                    </motion.a>
+                  ))}
+                </div>
+                <span className="text-sm text-gray-600">or use your email for registration</span>
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="text" 
+                  placeholder="Name" 
+                  className="input mb-4" 
+                />
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="email" 
+                  placeholder="Email" 
+                  className="input mb-4" 
+                />
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="password" 
+                  placeholder="Password" 
+                  className="input mb-6" 
+                />
+                <motion.button 
+                  whileHover={{ scale: 1.02, backgroundColor: '#00c567' }}
+                  whileTap={{ scale: 0.98 }}
+                  className="btn w-full"
+                  onClick={() => router.push('/landing')}
+                  style={{ backgroundColor: '#01DF73' }}
+                >
+                  Sign Up
+                </motion.button>
               </motion.div>
             )}
+          </AnimatePresence>
+        </motion.div>
 
-            {/* Name Input */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full Name
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <User className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-2 focus:border-primary sm:text-sm transition-colors"
-                  placeholder="Enter your full name"
-                />
-              </div>
-            </div>
-
-            {/* Email Input */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <Mail className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-2 focus:border-primary sm:text-sm transition-colors"
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
-
-            {/* Password Input */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  name="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-2 focus:border-primary sm:text-sm transition-colors"
-                  placeholder="Create a password"
-                />
-              </div>
-            </div>
-
-            {/* Confirm Password Input */}
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-2 focus:border-primary sm:text-sm transition-colors"
-                  placeholder="Confirm your password"
-                />
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.99 }}
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ backgroundColor: colors.primaryGreen }}
-            >
-              {isSubmitting ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                'Create Account'
-              )}
-            </motion.button>
-          </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Already have an account?</span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <motion.button
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                onClick={() => router.push('/auth/signin')}
-                className="w-full flex items-center justify-center px-4 py-2 border rounded-lg shadow-sm text-sm font-medium transition-all"
-                style={{ 
-                  borderColor: colors.primaryGreen,
-                  color: colors.primaryGreen 
-                }}
+        {/* Overlay Container */}
+        <motion.div
+          animate={{ x: isSignUp ? '-100%' : '0%' }}
+          transition={{ duration: 0.7, ease: [0.4, 0.0, 0.2, 1] }}
+          className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-[#01DF73]/90 to-[#C9E600]/80 backdrop-blur-sm text-white flex flex-col items-center justify-center p-12 text-center"
+        >
+          <AnimatePresence mode="wait">
+            {!isSignUp ? (
+              <motion.div
+                key="welcome"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
               >
-                Sign in instead
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </motion.button>
-            </div>
-          </div>
-        </div>
+                <h1 className="text-4xl font-bold mb-6">Hello, Friend!</h1>
+                <p className="text-lg mb-8 opacity-90 leading-relaxed">
+                  Start your journey with us today and experience seamless bus booking services
+                </p>
+                <motion.button 
+                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn border-2 border-white bg-transparent hover:bg-white/10 transition-colors text-lg px-12"
+                  onClick={() => setIsSignUp(true)}
+                >
+                  Create Account
+                </motion.button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="welcomeBack"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h1 className="text-4xl font-bold mb-6">Welcome Back!</h1>
+                <p className="text-lg mb-8 opacity-90 leading-relaxed">
+                  Already have an account? Sign in to continue your journey
+                </p>
+                <motion.button 
+                  whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                  whileTap={{ scale: 0.95 }}
+                  className="btn border-2 border-white bg-transparent hover:bg-white/10 transition-colors text-lg px-12"
+                  onClick={() => setIsSignUp(false)}
+                >
+                  Sign In
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </motion.div>
     </div>
   );

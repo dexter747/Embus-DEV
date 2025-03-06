@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Search, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/navbar';
 import SearchLocationModal from '@/components/SearchLocationModal';
 
@@ -18,6 +19,20 @@ const InterCityPage = () => {
     secondaryGreen: '#C9E600',
     lightBg: '#F7FFF2',
     darkText: '#0E0E0E'
+  };
+
+  const fadeInUp = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.8 }
+  };
+
+  const staggerContainer = {
+    animate: {
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
   };
 
   useEffect(() => {
@@ -46,19 +61,36 @@ const InterCityPage = () => {
   return (
     <div className="min-h-screen font-dm-sans" style={{ backgroundColor: colors.lightBg }}>
       <Navbar colors={colors} />
-        <div className="relative">
-        <div className="absolute inset-0" style={{ 
-          background: `linear-gradient(to right, ${colors.primaryGreen}, ${colors.secondaryGreen})`,
-          opacity: 0.95
-        }}></div>
+      
+      {/* Hero Section with Enhanced Animation */}
+      <div className="relative">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.95 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0" 
+          style={{ 
+            background: `linear-gradient(to right, ${colors.primaryGreen}, ${colors.secondaryGreen})`,
+          }}
+        />
 
         <div className="relative max-w-7xl mx-auto px-4 py-24">
-          <h1 className="text-6xl md:text-7xl font-chillax font-semibold text-white text-center mb-12">
+          <motion.h1 
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, type: "spring", bounce: 0.4 }}
+            className="text-6xl md:text-7xl font-chillax font-semibold text-white text-center mb-12"
+          >
             Inter-City Travel
-          </h1>
+          </motion.h1>
           
-          {/* Search Box */}
-          <div className="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto">
+          {/* Search Box with Animation */}
+          <motion.div 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-white rounded-xl shadow-xl p-8 max-w-4xl mx-auto"
+          >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { 
@@ -105,18 +137,124 @@ const InterCityPage = () => {
                 </div>
               ))} 
             </div>
-            <button 
-              className="w-full mt-6 py-4 rounded-lg flex items-center justify-center gap-2 text-white font-chillax font-medium text-lg transition-transform hover:scale-[1.02] "
+            <motion.button 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full mt-6 py-4 rounded-lg flex items-center justify-center gap-2 text-white font-chillax font-medium text-lg transition-all"
               style={{ backgroundColor: colors.primaryGreen }}
             >
               <Search size={24} />
               SEARCH BUSES
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         </div>
       </div>
 
-      {/* Add the modal component */}
+      {/* Popular Routes Section with Animations */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto px-4 py-16"
+      >
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-between items-center mb-8"
+        >
+          <h2 className="text-2xl font-chillax font-semibold" style={{ color: colors.darkText }}>
+            POPULAR ROUTES
+          </h2>
+          <motion.button 
+            whileHover={{ scale: 1.05, x: 5 }}
+            className="font-medium hover:underline flex items-center gap-2"
+            style={{ color: colors.primaryGreen }}
+          >
+            View All
+            <ArrowRight size={16} />
+          </motion.button>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { 
+              title: 'Mumbai - Pune',
+              icon: '🚌',
+              color: colors.primaryGreen,
+              desc: 'Starting from ₹350',
+              time: '2h 30m',
+              frequency: '30+ buses daily'
+            },
+            { title: 'Delhi - Chandigarh', icon: '🚍', color: colors.secondaryGreen,
+              desc: 'Starting from ₹450' },
+            { title: 'Bangalore - Chennai', icon: '🚐', color: colors.primaryGreen,
+              desc: 'Starting from ₹600' }
+          ].map((route, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ y: 50, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, delay: idx * 0.2 }}
+              whileHover={{ 
+                y: -8, 
+                scale: 1.02,
+                transition: { duration: 0.2 }
+              }}
+              className="rounded-xl p-6 cursor-pointer group bg-white shadow-lg border border-gray-100"
+            >
+              <motion.div 
+                className="flex items-start gap-4"
+                whileHover={{ y: -5 }}
+              >
+                <motion.div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.8 }}
+                  style={{ backgroundColor: route.color }}
+                >
+                  {route.icon}
+                </motion.div>
+                <div>
+                  <h3 className="font-chillax font-bold text-lg mb-2" style={{ color: colors.darkText }}>
+                    {route.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">{route.desc}</p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="text-xs text-gray-500">Journey time: {route.time}</span>
+                    <span className="text-xs font-medium" style={{ color: colors.primaryGreen }}>
+                      {route.frequency}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Animated Footer */}
+      <motion.footer 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="bg-white py-8"
+      >
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          className="text-center max-w-2xl mx-auto px-4"
+        >
+          <h2 
+            className="text-2xl md:text-2xl font-chillax font-semibold"
+            style={{ color: colors.primaryGreen }}
+          >
+            Apno ko, Sapno ko Kareeb Laaye.
+          </h2>
+        </motion.div>
+      </motion.footer>
+
       <SearchLocationModal
         isOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
@@ -130,76 +268,6 @@ const InterCityPage = () => {
         type={searchType}
         colors={colors}
       />
-
-      {/* Trending Offers Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-2xl font-chillax font-semibold" style={{ color: colors.darkText }}>
-            POPULAR ROUTES
-          </h2>
-          <button 
-            className="font-medium hover:underline"
-            style={{ color: colors.primaryGreen }}
-          >
-            View All
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            { title: 'Mumbai - Pune', icon: '🚌', color: colors.primaryGreen, 
-              desc: 'Starting from ₹350' },
-            { title: 'Delhi - Chandigarh', icon: '🚍', color: colors.secondaryGreen,
-              desc: 'Starting from ₹450' },
-            { title: 'Bangalore - Chennai', icon: '🚐', color: colors.primaryGreen,
-              desc: 'Starting from ₹600' }
-          ].map((offer, idx) => (
-            <div 
-              key={idx}
-              className="rounded-xl p-6 transition-all duration-300 hover:scale-[1.03] hover:shadow-xl cursor-pointer group"
-              style={{ 
-                backgroundColor: `${offer.color}10`,
-                transform: 'translateY(0)'
-              }}
-            >
-              <div className="flex items-start gap-4">
-                <div 
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-white font-chillax font-semibold transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
-                  style={{ backgroundColor: offer.color }}
-                >
-                  {offer.icon}
-                </div>
-                <div>
-                  <h3 
-                    className="font-chillax font-bold mb-2 text-lg transition-all duration-300 group-hover:text-xl" 
-                    style={{ color: colors.darkText }}
-                  >
-                    {offer.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 transition-all duration-300 group-hover:text-gray-800">
-                    {offer.desc}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-2 transition-all duration-300 group-hover:text-gray-700">
-                    Multiple departures daily
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-white py-8">
-        <div className="text-center max-w-2xl mx-auto px-4">
-          <h2 
-            className="text-2xl md:text-2xl font-chillax font-semibold"
-            style={{ color: colors.primaryGreen }}
-          >
-            Apno ko, Sapno ko Kareeb Laaye.
-          </h2>
-        </div>
-      </footer>
     </div>
   );
 };
