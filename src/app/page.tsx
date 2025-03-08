@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Calendar, TrendingUp, Bus } from 'lucide-react';
 import Navbar from '@/components/navbar';
 import SearchLocationModal from '@/components/SearchLocationModal';
 
@@ -12,19 +11,13 @@ const LandingPage = () => {
   const [date, setDate] = React.useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchType, setSearchType] = useState<'from' | 'to'>('from');
-  const [isInterCity, setIsInterCity] = useState(false);
+  const [isInterCity] = useState(false);
 
   const colors = {
     primaryGreen: '#01DF73',
     secondaryGreen: '#C9E600',
     lightBg: '#F7FFF2',
     darkText: '#0E0E0E'
-  };
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8 }
   };
 
   return (

@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowRight, Bus, Navigation2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 
@@ -12,12 +12,6 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export default function Home() {
   const router = useRouter();
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8 }
-  };
 
   const staggerContainer = {
     animate: {
@@ -173,7 +167,7 @@ export default function Home() {
                 Our services cater to the everyday needs of young professionals, students, and budget-conscious commuters who seek comfort and reliability without compromising their finances.
               </p>
               <p className="text-xl text-gray-800 leading-relaxed">
-                At EMBUS, we are passionate about reducing urban congestion and environmental impact while enhancing commuter convenience. With a smart and scalable solution, we bridge the gap between intercity and intra-city travel to unlock a new era of efficient transportation in India's bustling cities.
+                At EMBUS, we are passionate about reducing urban congestion and environmental impact while enhancing commuter convenience. With a smart and scalable solution, we bridge the gap between intercity and intra-city travel to unlock a new era of efficient transportation in Indias bustling cities.
               </p>
             </motion.div>
           </div>

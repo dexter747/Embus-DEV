@@ -19,25 +19,28 @@ const Navbar = ({ colors }: NavbarProps) => {
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
+        async (position: GeolocationPosition) => {
           try {
             const response = await fetch(
               `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=29a8d0f8953c4dd9916f235c1aefe163`
             );
             const data = await response.json();
-            const city = data.results[0].components.city || data.results[0].components.town;
+            const city =
+              data.results[0].components.city || data.results[0].components.town;
             setLocation(city);
-          } catch (error) {
+          } catch {
+            // 'error' removed since it's unused
             setLocation("Location unavailable");
           } finally {
             setLoading(false);
           }
         },
-        (error) => {
-          setLocation("Enable location");
+        () => {
+          // Handle geolocation error (e.g., user denied permission)
+          setLocation("Location unavailable");
           setLoading(false);
         }
       );
