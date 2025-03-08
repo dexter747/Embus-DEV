@@ -4,12 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/navbar';
-import SearchLocationModal from '@/components/SearchLocationModal';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the SearchLocationModal with SSR disabled
+const SearchLocationModal = dynamic(() => import('@/components/SearchLocationModal'), {
+  ssr: false
+});
 
 const InterCityPage = () => {
-  const [fromCity, setFromCity] = React.useState('');
-  const [toCity, setToCity] = React.useState('');
-  const [date, setDate] = React.useState('');
+  const [fromCity, setFromCity] = useState('');
+  const [toCity, setToCity] = useState('');
+  const [date, setDate] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchType, setSearchType] = useState<'from' | 'to'>('from');
@@ -21,27 +26,33 @@ const InterCityPage = () => {
     darkText: '#0E0E0E'
   };
 
+  // Move geolocation logic to useEffect to ensure it only runs in the browser
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          try {
-            const response = await fetch(
-              `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=29a8d0f8953c4dd9916f235c1aefe163`
-            );
-            const data = await response.json();
-            const city = data.results[0].components.city || data.results[0].components.town;
-            setCurrentLocation(city);
-            setFromCity(city); // Set the from city to current location
-          } catch (error) {
-            console.error('Error fetching location:', error);
+    // Only run geolocation code in the browser
+    const getLocation = async () => {
+      if (typeof window !== 'undefined' && "geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              const response = await fetch(
+                `https://api.opencagedata.com/geocode/v1/json?q=${position.coords.latitude}+${position.coords.longitude}&key=29a8d0f8953c4dd9916f235c1aefe163`
+              );
+              const data = await response.json();
+              const city = data.results[0].components.city || data.results[0].components.town;
+              setCurrentLocation(city);
+              setFromCity(city); // Set the from city to current location
+            } catch (error) {
+              console.error('Error fetching location:', error);
+            }
+          },
+          (error) => {
+            console.error('Error getting location:', error);
           }
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-        }
-      );
-    }
+        );
+      }
+    };
+    
+    getLocation();
   }, []);
 
   return (
@@ -173,10 +184,22 @@ const InterCityPage = () => {
               time: '2h 30m',
               frequency: '30+ buses daily'
             },
-            { title: 'Delhi - Chandigarh', icon: '🚍', color: colors.secondaryGreen,
-              desc: 'Starting from ₹450' },
-            { title: 'Bangalore - Chennai', icon: '🚐', color: colors.primaryGreen,
-              desc: 'Starting from ₹600' }
+            { 
+              title: 'Delhi - Chandigarh', 
+              icon: '🚍', 
+              color: colors.secondaryGreen,
+              desc: 'Starting from ₹450',
+              time: '4h 15m',
+              frequency: '25+ buses daily'
+            },
+            { 
+              title: 'Bangalore - Chennai', 
+              icon: '🚐', 
+              color: colors.primaryGreen,
+              desc: 'Starting from ₹600',
+              time: '5h 45m',
+              frequency: '20+ buses daily'
+            }
           ].map((route, idx) => (
             <motion.div
               key={idx}
@@ -241,19 +264,22 @@ const InterCityPage = () => {
         </motion.div>
       </motion.footer>
 
-      <SearchLocationModal
-        isOpen={isSearchModalOpen}
-        onClose={() => setIsSearchModalOpen(false)}
-        onSelect={(location) => {
-          if (searchType === 'from') {
-            setFromCity(location.name);
-          } else {
-            setToCity(location.name);
-          }
-        }}
-        type={searchType}
-        colors={colors}
-      />
+      {/* Only render the modal on the client side */}
+      {isSearchModalOpen && (
+        <SearchLocationModal
+          isOpen={isSearchModalOpen}
+          onClose={() => setIsSearchModalOpen(false)}
+          onSelect={(location) => {
+            if (searchType === 'from') {
+              setFromCity(location.name);
+            } else {
+              setToCity(location.name);
+            }
+          }}
+          type={searchType}
+          colors={colors}
+        />
+      )}
     </div>
   );
 };

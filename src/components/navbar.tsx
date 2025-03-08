@@ -55,7 +55,7 @@ export default function Navbar({ colors }: NavbarProps) {
   // Use provided colors or defaults
   const themeColors = colors || defaultColors;
 
-  // Fetch geolocation on mount
+  // Fetch geolocation on mount (client-side only)
   useEffect(() => {
     if (typeof window === 'undefined' || !('geolocation' in navigator)) {
       setLocation('Geolocation not supported');

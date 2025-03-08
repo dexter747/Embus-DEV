@@ -2,13 +2,18 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/navbar';
-import SearchLocationModal from '@/components/SearchLocationModal';
+
+// Dynamically import the SearchLocationModal with SSR disabled
+const SearchLocationModal = dynamic(() => import('@/components/SearchLocationModal'), {
+  ssr: false
+});
 
 const LandingPage = () => {
-  const [fromCity, setFromCity] = React.useState('');
-  const [toCity, setToCity] = React.useState('');
-  const [date, setDate] = React.useState('');
+  const [fromCity, setFromCity] = useState('');
+  const [toCity, setToCity] = useState('');
+  const [date, setDate] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchType, setSearchType] = useState<'from' | 'to'>('from');
   const [isInterCity] = useState(false);
@@ -286,19 +291,21 @@ const LandingPage = () => {
         </motion.div>
       </motion.footer>
 
-      <SearchLocationModal
-        isOpen={isSearchModalOpen}
-        onClose={() => setIsSearchModalOpen(false)}
-        onSelect={(location) => {
-          if (searchType === 'from') {
-            setFromCity(location.name);
-          } else {
-            setToCity(location.name);
-          }
-        }}
-        type={searchType}
-        colors={colors}
-      />
+      {isSearchModalOpen && (
+        <SearchLocationModal
+          isOpen={isSearchModalOpen}
+          onClose={() => setIsSearchModalOpen(false)}
+          onSelect={(location) => {
+            if (searchType === 'from') {
+              setFromCity(location.name);
+            } else {
+              setToCity(location.name);
+            }
+          }}
+          type={searchType}
+          colors={colors}
+        />
+      )}
     </div>
   );
 };
