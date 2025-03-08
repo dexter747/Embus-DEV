@@ -20,7 +20,16 @@ interface NavLink {
   href: string;
 }
 
-export default function Navbar() {
+interface NavbarProps {
+  colors?: {
+    primaryGreen: string;
+    secondaryGreen: string;
+    lightBg: string;
+    darkText: string;
+  };
+}
+
+export default function Navbar({ colors }: NavbarProps) {
   const [location, setLocation] = useState<string>('Loading...');
   const [loading, setLoading] = useState<boolean>(true);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -35,6 +44,16 @@ export default function Navbar() {
     { label: 'Contact', href: '/contact' },
   ];
 
+  // Default colors if not provided
+  const defaultColors = {
+    primaryGreen: '#01DF73',
+    secondaryGreen: '#C9E600',
+    lightBg: '#F7FFF2',
+    darkText: '#0E0E0E',
+  };
+
+  // Use provided colors or defaults
+  const themeColors = colors || defaultColors;
 
   // Fetch geolocation on mount
   useEffect(() => {
@@ -108,12 +127,19 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-800 text-white shadow-lg sticky top-0 z-50">
+    <nav
+      className="shadow-lg sticky top-0 z-50"
+      style={{ backgroundColor: themeColors.primaryGreen }}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold tracking-tight">
+            <Link
+              href="/"
+              className="text-2xl font-bold tracking-tight"
+              style={{ color: themeColors.darkText }}
+            >
               Embus
             </Link>
           </div>
@@ -125,6 +151,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className="hover:text-gray-300 transition-colors duration-200"
+                style={{ color: themeColors.darkText }}
               >
                 {link.label}
               </Link>
@@ -139,7 +166,7 @@ export default function Navbar() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search routes..."
-                className="w-full p-2 pl-10 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-primaryGreen"
+                className="w-full p-2 pl-10 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
               />
               <Search
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -151,14 +178,19 @@ export default function Navbar() {
           {/* Location and User Menu */}
           <div className="hidden md:flex items-center space-x-4">
             <div className="flex items-center gap-2">
-              <MapPin size={18} />
+              <MapPin size={18} style={{ color: themeColors.darkText }} />
               {loading ? (
-                <span className="animate-pulse">Loading...</span>
+                <span className="animate-pulse" style={{ color: themeColors.darkText }}>
+                  Loading...
+                </span>
               ) : (
-                <span>{location}</span>
+                <span style={{ color: themeColors.darkText }}>{location}</span>
               )}
             </div>
-            <button className="p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <button
+              className="p-2 rounded-full hover:bg-gray-700 transition-colors"
+              style={{ color: themeColors.darkText }}
+            >
               <User size={20} />
             </button>
           </div>
@@ -169,6 +201,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md hover:bg-gray-700 focus:outline-none"
               aria-label="Toggle menu"
+              style={{ color: themeColors.darkText }}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -181,6 +214,7 @@ export default function Navbar() {
         <div
           ref={menuRef}
           className="md:hidden bg-gray-800 border-t border-gray-700 px-4 py-6 space-y-4"
+          style={{ backgroundColor: themeColors.primaryGreen }}
         >
           {/* Mobile Search */}
           <form onSubmit={handleSearch} className="relative">
@@ -189,7 +223,7 @@ export default function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search routes..."
-              className="w-full p-2 pl-10 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-primaryGreen"
+              className="w-full p-2 pl-10 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
             <Search
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
@@ -203,6 +237,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className="block py-2 text-lg hover:text-gray-300 transition-colors"
+              style={{ color: themeColors.darkText }}
               onClick={() => setIsMenuOpen(false)}
             >
               {link.label}
@@ -211,16 +246,21 @@ export default function Navbar() {
 
           {/* Mobile Location */}
           <div className="flex items-center gap-2 py-2">
-            <MapPin size={18} />
+            <MapPin size={18} style={{ color: themeColors.darkText }} />
             {loading ? (
-              <span className="animate-pulse">Loading...</span>
+              <span className="animate-pulse" style={{ color: themeColors.darkText }}>
+                Loading...
+              </span>
             ) : (
-              <span>{location}</span>
+              <span style={{ color: themeColors.darkText }}>{location}</span>
             )}
           </div>
 
           {/* Mobile User Menu */}
-          <button className="flex items-center gap-2 py-2 hover:text-gray-300">
+          <button
+            className="flex items-center gap-2 py-2 hover:text-gray-300"
+            style={{ color: themeColors.darkText }}
+          >
             <User size={20} />
             <span>Profile</span>
           </button>
