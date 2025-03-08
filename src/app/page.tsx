@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/Footer';
 
 // Dynamically import the SearchLocationModal with SSR disabled
 const SearchLocationModal = dynamic(() => import('@/components/SearchLocationModal'), {
@@ -270,26 +271,7 @@ const LandingPage = () => {
         </div>
       </motion.div>
 
-      {/* Footer with Animation */}
-      <motion.footer 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="bg-white py-8"
-      >
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          className="text-center max-w-2xl mx-auto px-4"
-        >
-          <h2 
-            className="text-2xl md:text-2xl font-chillax font-semibold"
-            style={{ color: colors.primaryGreen }}
-          >
-            Apno ko, Sapno ko Kareeb Laaye.
-          </h2>
-        </motion.div>
-      </motion.footer>
+      <Footer />
 
       {isSearchModalOpen && (
         <SearchLocationModal

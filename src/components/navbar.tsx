@@ -38,7 +38,7 @@ export default function Navbar({ colors }: NavbarProps) {
 
   // Navigation links
   const navLinks: NavLink[] = [
-    { label: 'Home', href: '/' },
+    { label: 'Home', href: '/landing' },  // Changed from '/' to '/landing'
     { label: 'Intercity', href: '/intercity' },
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
@@ -136,7 +136,7 @@ export default function Navbar({ colors }: NavbarProps) {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link
-              href="/"
+              href="/landing"  // Changed from '/' to '/landing'
               className="text-2xl font-bold tracking-tight"
               style={{ color: themeColors.darkText }}
             >
@@ -188,7 +188,7 @@ export default function Navbar({ colors }: NavbarProps) {
               )}
             </div>
             <button
-              className="p-2 rounded-full hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-full hover:bg-white/20 transition-all duration-200 transform hover:scale-105"
               style={{ color: themeColors.darkText }}
             >
               <User size={20} />
@@ -258,7 +258,7 @@ export default function Navbar({ colors }: NavbarProps) {
 
           {/* Mobile User Menu */}
           <button
-            className="flex items-center gap-2 py-2 hover:text-gray-300"
+            className="flex items-center gap-2 py-2 w-full hover:bg-white/20 rounded-lg px-3 transition-all duration-200"
             style={{ color: themeColors.darkText }}
           >
             <User size={20} />

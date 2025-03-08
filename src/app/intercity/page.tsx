@@ -5,8 +5,8 @@ import { motion } from 'framer-motion';
 import { Search, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/navbar';
 import dynamic from 'next/dynamic';
+import Footer from '@/components/Footer';
 
-// Dynamically import the SearchLocationModal with SSR disabled
 const SearchLocationModal = dynamic(() => import('@/components/SearchLocationModal'), {
   ssr: false
 });
@@ -26,9 +26,7 @@ const InterCityPage = () => {
     darkText: '#0E0E0E'
   };
 
-  // Move geolocation logic to useEffect to ensure it only runs in the browser
   useEffect(() => {
-    // Only run geolocation code in the browser
     const getLocation = async () => {
       if (typeof window !== 'undefined' && "geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
@@ -40,7 +38,7 @@ const InterCityPage = () => {
               const data = await response.json();
               const city = data.results[0].components.city || data.results[0].components.town;
               setCurrentLocation(city);
-              setFromCity(city); // Set the from city to current location
+              setFromCity(city);
             } catch (error) {
               console.error('Error fetching location:', error);
             }
@@ -59,7 +57,6 @@ const InterCityPage = () => {
     <div className="min-h-screen font-dm-sans" style={{ backgroundColor: colors.lightBg }}>
       <Navbar colors={colors} />
       
-      {/* Hero Section with Enhanced Animation */}
       <div className="relative">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -81,7 +78,6 @@ const InterCityPage = () => {
             Inter-City Travel
           </motion.h1>
           
-          {/* Search Box with Animation */}
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -123,9 +119,9 @@ const InterCityPage = () => {
                     }}
                     value={field.value}
                     onChange={(e) => field.setter(e.target.value)}
-                    readOnly={!field.type} // Make location inputs read-only
+                    readOnly={!field.type}
                     onClick={() => {
-                      if (!field.type) { // Only for location fields
+                      if (!field.type) {
                         setSearchType(field.label.toLowerCase() as 'from' | 'to');
                         setIsSearchModalOpen(true);
                       }
@@ -147,7 +143,6 @@ const InterCityPage = () => {
         </div>
       </div>
 
-      {/* Popular Routes Section with Animations */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -243,28 +238,8 @@ const InterCityPage = () => {
         </div>
       </motion.div>
 
-      {/* Animated Footer */}
-      <motion.footer 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="bg-white py-8"
-      >
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          className="text-center max-w-2xl mx-auto px-4"
-        >
-          <h2 
-            className="text-2xl md:text-2xl font-chillax font-semibold"
-            style={{ color: colors.primaryGreen }}
-          >
-            Apno ko, Sapno ko Kareeb Laaye.
-          </h2>
-        </motion.div>
-      </motion.footer>
+      <Footer />
 
-      {/* Only render the modal on the client side */}
       {isSearchModalOpen && (
         <SearchLocationModal
           isOpen={isSearchModalOpen}
