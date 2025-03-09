@@ -1,7 +1,7 @@
 'use client';
 
 import { ArrowRight, Bus, Navigation2 } from 'lucide-react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import { useRef } from 'react';
@@ -23,12 +23,6 @@ export default function Home() {
   // Add smooth scroll values
   const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
   const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8 }
-  };
 
   const staggerContainer = {
     animate: {

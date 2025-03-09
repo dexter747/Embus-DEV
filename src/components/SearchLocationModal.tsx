@@ -4,24 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Search, MapPin } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import 'leaflet/dist/leaflet.css';
-import type { Map as LeafletMap } from 'leaflet';
 import L from 'leaflet';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Add this near the top of the file
 const DEBOUNCE_DELAY = 300; // Reduce debounce delay
 const SEARCH_MIN_LENGTH = 2; // Reduce minimum search length
-
-// Fix Leaflet marker icon
-const markerIcon = L.icon({
-  iconUrl: '/marker-icon.png', // Add these images to your public folder
-  iconRetinaUrl: '/marker-icon-2x.png',
-  shadowUrl: '/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
 
 // Dynamically import the Map component with no SSR
 const Map = dynamic(() => import('./Map'), {
@@ -33,6 +21,14 @@ interface Location {
   name: string;
   address: string;
   coordinates: [number, number];
+}
+
+// Define interface for OpenStreetMap API response
+interface OpenStreetMapResult {
+  display_name: string;
+  lat: string;
+  lon: string;
+  [key: string]: unknown;
 }
 
 interface SearchLocationModalProps {
@@ -53,7 +49,6 @@ const SearchLocationModal = ({ isOpen, onClose, onSelect, type, colors }: Search
   const [loading, setLoading] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
   // Add map state
-  const [map, setMap] = useState<L.Map | null>(null);
   const mapRef = useRef<L.Map | null>(null);
 
   // Update the searchLocations function
@@ -77,7 +72,7 @@ const SearchLocationModal = ({ isOpen, onClose, onSelect, type, colors }: Search
       
       // Ensure data is an array before mapping
       if (Array.isArray(data)) {
-        const formattedResults: Location[] = data.map((item: any) => ({
+        const formattedResults: Location[] = data.map((item: OpenStreetMapResult) => ({
           name: item.display_name.split(',')[0],
           address: item.display_name,
           coordinates: [parseFloat(item.lat), parseFloat(item.lon)]
