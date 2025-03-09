@@ -37,6 +37,18 @@ export default function Home() {
     cardsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Generate random positions that are not dependent on window object during render
+  const generateRandomPositions = (index: number) => {
+    // Using the index to create deterministic but seemingly random values
+    const hashX = Math.sin(index * 747) * 0.5 + 0.5; // Value between 0 and 1
+    const hashY = Math.cos(index * 747) * 0.5 + 0.5; // Value between 0 and 1
+    
+    return {
+      x: hashX * 100 + '%',
+      y: hashY * 100 + '%'
+    };
+  };
+
   return (
     <div className={`min-h-screen bg-white ${plusJakarta.className}`} ref={targetRef}>
       {/* Hero Section with Enhanced Animation */}
@@ -105,28 +117,34 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Floating Elements Animation */}
-        <motion.div className="absolute inset-0 pointer-events-none">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-4 h-4 rounded-full bg-[#01DF73]/10"
-              initial={{ 
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight
-              }}
-              animate={{ 
-                y: [Math.random() * window.innerHeight, Math.random() * window.innerHeight],
-                x: [Math.random() * window.innerWidth, Math.random() * window.innerWidth],
-              }}
-              transition={{
-                duration: Math.random() * 10 + 10,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
-            />
-          ))}
-        </motion.div>
+        {/* Floating Elements Animation - Client-side only */}
+        {typeof window !== 'undefined' && (
+          <motion.div className="absolute inset-0 pointer-events-none">
+            {[...Array(20)].map((_, i) => {
+              const positions = generateRandomPositions(i);
+              
+              return (
+                <motion.div
+                  key={i}
+                  className="absolute w-4 h-4 rounded-full bg-[#01DF73]/10"
+                  initial={{ 
+                    x: positions.x,
+                    y: positions.y
+                  }}
+                  animate={{ 
+                    y: [positions.y, generateRandomPositions(i + 100).y],
+                    x: [positions.x, generateRandomPositions(i + 200).x],
+                  }}
+                  transition={{
+                    duration: (i % 10) + 10,
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                />
+              );
+            })}
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Travel Cards Section with Parallax */}
@@ -144,17 +162,17 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <motion.div
               whileHover={{ 
-                scale: 1.05, // Increased from 1.03
+                scale: 1.05,
                 rotate: -1,
-                y: -10, // Added y translation
-                transition: { type: "spring", stiffness: 400, damping: 10 } // Added spring physics
+                y: -10,
+                transition: { type: "spring", stiffness: 400, damping: 10 }
               }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, type: "spring" }}
               onClick={() => router.push('/')}
-              className="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 cursor-pointer transform transition-all hover:shadow-2xl" // Added shadow transition
+              className="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 cursor-pointer transform transition-all hover:shadow-2xl"
             >
               <motion.div 
                 className="flex items-center justify-center w-20 h-20 bg-[#01DF73] rounded-full mb-8"
@@ -183,17 +201,17 @@ export default function Home() {
 
             <motion.div
               whileHover={{ 
-                scale: 1.05, // Increased from 1.03
+                scale: 1.05,
                 rotate: 1,
-                y: -10, // Added y translation
-                transition: { type: "spring", stiffness: 400, damping: 10 } // Added spring physics
+                y: -10,
+                transition: { type: "spring", stiffness: 400, damping: 10 }
               }}
               whileTap={{ scale: 0.98 }}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, type: "spring" }}
               onClick={() => router.push('/intercity')}
-              className="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 cursor-pointer transform transition-all hover:shadow-2xl" // Added shadow transition
+              className="bg-white rounded-2xl p-10 shadow-xl border border-gray-100 cursor-pointer transform transition-all hover:shadow-2xl"
             >
               <motion.div 
                 className="flex items-center justify-center w-20 h-20 bg-[#C9E600] rounded-full mb-8"
@@ -421,7 +439,7 @@ export default function Home() {
               </div>
               <div className="mt-8">
                 <h4 className="text-sm font-semibold mb-4">Download Our App</h4>
-                <div className="flex flex-col space-y-4"> {/* Changed to flex-col and space-y-4 */}
+                <div className="flex flex-col space-y-4">
                   <motion.img
                     whileHover={{ scale: 1.05 }}
                     src="/app-store.png"
