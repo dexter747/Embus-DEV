@@ -51,7 +51,7 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen bg-white ${plusJakarta.className}`} ref={targetRef}>
-      {/* Hero Section with Enhanced Animation */}
+      {/* Hero Section with 1.png Background and Subtle Overlay */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -59,20 +59,13 @@ export default function Home() {
         className="relative h-screen flex items-center justify-center overflow-hidden"
       >
         <motion.div 
-          className="absolute inset-0 z-0"
-          animate={{ 
-            background: [
-              "linear-gradient(to right, rgba(1,223,115,0.1), rgba(201,230,0,0.1))",
-              "linear-gradient(to right, rgba(1,223,115,0.2), rgba(201,230,0,0.2))",
-              "linear-gradient(to right, rgba(1,223,115,0.1), rgba(201,230,0,0.1))"
-            ]
+          className="absolute inset-0 z-0 bg-cover bg-center"
+          style={{
+            backgroundImage: "url('/1.png')", // Apply 1.png as background
           }}
-          transition={{ 
-            duration: 5, 
-            repeat: Infinity,
-            repeatType: "reverse" 
-          }}
-        />
+        >
+          <div className="absolute inset-0 bg-[#0E0E0E]/30 backdrop-blur-sm"></div> {/* Subtle overlay for readability */}
+        </motion.div>
 
         <div className="relative z-10 text-center">
           <motion.h1 
@@ -92,14 +85,13 @@ export default function Home() {
           </motion.h1>
           
           <motion.p 
-            className="text-2xl text-gray-600 mt-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-          >
-            Your journey, our priority
-          </motion.p>
-
+              className="text-2xl text-white mt-8 drop-shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+>
+  Your journey, our priority
+</motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -147,17 +139,21 @@ export default function Home() {
         )}
       </motion.div>
 
-      {/* Travel Cards Section with Parallax */}
+      {/* Travel Cards Section with 1.png as Subtle Background */}
       <motion.div 
         ref={cardsRef}
         style={{ opacity, scale }}
         className="py-32 relative"
       >
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-10"
+          style={{ backgroundImage: "url('/1.png')" }} // Apply 1.png as subtle background
+        />
         <motion.div 
           variants={staggerContainer}
           initial="initial"
           animate="animate"
-          className="container mx-auto px-4 py-24"
+          className="container mx-auto px-4 py-24 relative z-10"
         >
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             <motion.div
@@ -374,6 +370,7 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* Footer */}
       <motion.footer 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

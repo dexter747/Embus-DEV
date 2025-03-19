@@ -4,6 +4,18 @@ import { useEffect, useState, useRef } from 'react';
 import { Search, MapPin, Menu, X, User } from 'lucide-react';
 import Link from 'next/link';
 
+<nav className="flex space-x-4">
+  <Link href="/" className="hover:text-[#01DF73] transition-colors">
+    Home
+  </Link>
+  <Link href="/about" className="hover:text-[#01DF73] transition-colors">
+    About
+  </Link>
+  <Link href="/contact" className="hover:text-[#01DF73] transition-colors">
+    Contact
+  </Link>
+</nav>
+
 // Define types for OpenCage API response
 interface GeocodeResponse {
   results: {
@@ -269,3 +281,5 @@ export default function Navbar({ colors }: NavbarProps) {
     </nav>
   );
 }
+
+
