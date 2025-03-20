@@ -14,8 +14,8 @@ const ContactUs = () => {
     offset: ['start end', 'end start'],
   });
 
-  const textOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
-  const textY = useTransform(scrollYProgress, [0, 0.3], [50, 0]);
+  // These values are now used in the motion.div components below
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
 
   return (
     <div ref={containerRef} className="overflow-hidden">
@@ -25,7 +25,7 @@ const ContactUs = () => {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: "url('/2.png')", // Apply 2.png as background
-            scale: useTransform(scrollYProgress, [0, 1], [1, 1.2]),
+            scale: heroScale,
           }}
         >
           <div className="absolute inset-0 bg-[#0E0E0E]/50 backdrop-blur-sm"></div>
@@ -47,7 +47,7 @@ const ContactUs = () => {
                 transition={{ duration: 0.8, delay: 0.4 }}
                 className="text-xl md:text-2xl font-medium text-[#F7FFF2]/80 max-w-3xl mx-auto"
               >
-                Let's bridge the gap between intercity and urban transport. Reach out to us for any inquiries or feedback.
+                Let&apos;s bridge the gap between intercity and urban transport. Reach out to us for any inquiries or feedback.
               </motion.p>
             </div>
           </div>
