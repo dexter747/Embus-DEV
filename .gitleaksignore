@@ -1,0 +1,4 @@
+# False positives: mock bus data, a variable name, and a blank line (no secrets)
+a36a9dfea545bb27a0c3cc9553460905e00e5604:src/app/intercity/page.tsx:generic-api-key:38
+ae4839c1695d4eed2f7983d91529a71d85bdc6c8:src/components/navbar.tsx:generic-api-key:28
+ae4839c1695d4eed2f7983d91529a71d85bdc6c8:src/app/intercity/page.tsx:generic-api-key:29

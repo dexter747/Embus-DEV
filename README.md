@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+
+# Embus
+
+### Intercity Bus Travel & Booking — Web App
+
+A Next.js front-end for searching, mapping, and booking intercity bus routes,
+with an interactive Leaflet map and a clean, animated UI.
+
+![Status](https://img.shields.io/badge/status-archived-orange)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Next.js](https://img.shields.io/badge/Next.js-App%20Router-000000)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178c6)
+![Leaflet](https://img.shields.io/badge/Maps-Leaflet-199900)
+
+</div>
+
+---
+
+> [!NOTE]
+> **Archived project, open-sourced as-is under MIT.** A front-end MVP with mock
+> data for routes and search. Shared as a reference for building map-based
+> travel/booking UIs with Next.js and Leaflet.
+
+## Overview
+
+Embus is the web front-end for an intercity bus travel product. Users browse a
+marketing landing page, search intercity routes, view results as cards and on a
+map, and start a booking/signup flow. The current build uses mock route data,
+so it runs with no backend or API keys required.
+
+## Features
+
+- 🗺️ **Interactive map** — route/stop visualization via Leaflet + React-Leaflet
+- 🔎 **Route search** — from/to with a location picker modal and results list
+- 🚌 **Bus info cards** — operator, timing, seats, pickup/dropoff, price
+- 🛬 **Intercity view** — dedicated results page for intercity journeys
+- 🏠 **Landing + marketing** — home, landing, about, and contact pages
+- 🔐 **Auth flow** — signup screen scaffold
+- ✨ **Polished UI** — Framer Motion animations, styled-components, Lucide icons
+
+## Pages
+
+| Route | Purpose |
+| --- | --- |
+| `/` · `/landing` | Home / marketing landing |
+| `/intercity` | Route search + results (list & map) |
+| `/about` | About the product |
+| `/contact` | Contact page |
+| `/auth/signup` | Sign-up flow |
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router) + TypeScript
+- **Maps:** Leaflet + React-Leaflet
+- **UI/animation:** Framer Motion, styled-components, Lucide & React Icons, Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+> Requires **Node.js 18+**.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/dexter747/Embus-DEV.git
+cd Embus-DEV
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build for production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build && npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+No environment variables are required — route/search data is mocked in the app.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Released under the [MIT License](./LICENSE) © 2025 Maitreya Kulkarni.
